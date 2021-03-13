@@ -1,0 +1,28 @@
+<mat-toolbar color="primary">
+
+    <button mat-button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/">
+            <mat-icon>home</mat-icon>
+            <span>Home</span>
+        </button>
+        <button mat-menu-item routerLink="/patient-list">
+            <mat-icon>list</mat-icon>
+            <span>Patient list</span>
+        </button>
+        <button mat-menu-item routerLink="/patient-form">
+            <mat-icon>medical_services</mat-icon>
+            <span>Add new patient</span>
+        </button>
+    </mat-menu>
+
+
+    <a routerLink="/">
+        <img src="assets/img/logo.png" height="80">
+    </a>
+    <span fxHide fxShow.gt-sm>Patient DB Maintenance App │</span> &nbsp;
+    <span>{{currentPageService.getCurrentPageTitle()}}</span>
+
+</mat-toolbar>

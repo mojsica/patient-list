@@ -1,0 +1,68 @@
+<div fxLayout="row" fxLayoutAlign="end end" class="table-holder mb-0">
+    <button mat-icon-button color="primary" routerLink="/patient-form">
+        <mat-icon matTooltip="Add new patient">medical_services</mat-icon>
+    </button>
+</div>
+<div class="mat-elevation-z8 table-holder mt-0">
+
+    <table mat-table [dataSource]="dataSource">
+
+
+        <!-- Name -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element" (click)="goToDetails(element)"> {{element.firstName + ' ' + element.lastName}} </td>
+        </ng-container>
+
+        <!-- Registration Date -->
+        <ng-container matColumnDef="regDate">
+            <th mat-header-cell *matHeaderCellDef> Registration date </th>
+            <td mat-cell *matCellDef="let element" (click)="goToDetails(element)"> {{element.registeredDate | date }} </td>
+        </ng-container>
+
+        <!-- Doctor's name -->
+        <ng-container matColumnDef="doctorsName">
+            <th mat-header-cell *matHeaderCellDef> Doctor's name </th>
+            <td mat-cell *matCellDef="let element" (click)="goToDetails(element)"> 
+                {{doctorsService.getDoctorsNameById(element.doctor)}} 
+            </td>
+        </ng-container>
+
+        <!-- Phone -->
+        <ng-container matColumnDef="phone">
+            <th mat-header-cell *matHeaderCellDef> Phone </th>
+            <td mat-cell *matCellDef="let element" (click)="goToDetails(element)">
+                {{patientsService.getPatientHomeAddress(element).phone}}
+            </td>
+        </ng-container>
+
+        <!-- email -->
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email </th>
+            <td mat-cell *matCellDef="let element">
+                <a class="mailto"   matTooltip="Send an email" [href]="'mailto:' + patientsService.getPatientHomeAddress(element).email">
+                    {{patientsService.getPatientHomeAddress(element).email}}
+                </a>
+            </td>
+        </ng-container>
+
+
+        <!-- Home address -->
+        <ng-container matColumnDef="homeAddress">
+            <th mat-header-cell *matHeaderCellDef> Home address </th>
+            <td mat-cell *matCellDef="let element" (click)="goToDetails(element)">
+                {{
+                patientsService.getPatientHomeAddress(element).street + ', ' +
+                patientsService.getPatientHomeAddress(element).city + ', ' +
+                patientsService.getPatientHomeAddress(element).zipcode + ' - ' +
+                patientsService.getPatientHomeAddress(element).country
+                }}
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

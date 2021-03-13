@@ -1,0 +1,153 @@
+<div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 60px;">
+    <mat-card *ngIf="!!id" style="width:360px;" fxLayoutAlign="start" fxLayout="column">
+        <h3>Patient id: {{id}}</h3>
+        <h3>Registered date: {{srForm.get('registeredDate').value | date}}</h3>
+    </mat-card>
+    <div style="width:392px;">
+        <div fxLayoutAlign="end">
+            <button mat-icon-button color="primary" routerLink="/patient-list">
+                <mat-icon matTooltip="Go to the patient list">list</mat-icon>
+            </button>
+        </div>
+    </div>
+    <mat-card style="width:360px;">
+        <form fxLayout="column" [formGroup]="srForm">
+            <!-- First name -->
+            <mat-form-field>
+                <input matInput placeholder="First name" formControlName="firstName">
+                <mat-error *ngIf="srForm.get('firstName').hasError('required')">
+                    First name is mandatory
+                </mat-error>
+            </mat-form-field>
+            <!-- Last name -->
+            <mat-form-field>
+                <input matInput placeholder="Last name" formControlName="lastName">
+                <mat-error *ngIf="srForm.get('lastName').hasError('required')">
+                    Last name is mandatory
+                </mat-error>
+            </mat-form-field>
+            <!-- Date birth -->
+            <mat-form-field>
+                <mat-label> Birth date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="dateBirth" (dateChange)="dateChange($event)">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="srForm.get('dateBirth').hasError('required')">
+                    Date birth is mandatory
+                </mat-error>
+            </mat-form-field>
+            <!-- VAT -->
+            <mat-form-field>
+                <input matInput placeholder="VAT code" formControlName="vat">
+                <mat-error *ngIf="srForm.get('vat').hasError('required')">
+                    VAT code is mandatory
+                </mat-error>
+            </mat-form-field>
+            <!-- Doctor -->
+            <mat-form-field>
+                <mat-label>Doctor</mat-label>
+                <mat-select formControlName="doctor">
+                    <mat-option *ngFor="let doctor of doctorsService.getDoctors()" [value]=doctor.id>
+                        {{doctor.firstName + ' ' + doctor.lastName + ' - ' + doctor.title}}
+                    </mat-option>
+                </mat-select>
+                <mat-error *ngIf="srForm.get('doctor').hasError('required')">You must make a selection</mat-error>
+            </mat-form-field>
+
+
+            <!-- Addresses -->
+            <div formArrayName="addresses">
+                <mat-card *ngFor="let address of addressForms.controls; let i=index" [formGroupName]="i"
+                    fxLayout="column" style="margin-top: 5px;">
+                    <!-- TYPE -->
+                    <!-- HOME -->
+                    <mat-form-field *ngIf="i==0">
+                        <mat-label>Type</mat-label>
+                        <mat-select formControlName="type" disabled=true>
+                            <mat-option value="HOME">Home</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('type').hasError('required')">You must
+                            make a selection
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- Rest types -->
+                    <mat-form-field *ngIf="i>0">
+                        <mat-label>Type</mat-label>
+                        <mat-select formControlName="type">
+                            <mat-option value="SECOND_HOME">Second home</mat-option>
+                            <mat-option value="WORK">Work</mat-option>
+                            <mat-option value="HOLYDAY">Holiday place</mat-option>
+                            <mat-option value="RELATIVE">Close relative</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('type').hasError('required')">You must
+                            make a selection
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- Email -->
+                    <mat-form-field>
+                        <input matInput placeholder="Email" formControlName="email">
+                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('email').hasError('email')">
+                            Entered email address is not valid
+                        </mat-error>
+                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('email').hasError('required')">
+                            Email is mandatory
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- Phone -->
+                    <mat-form-field>
+                        <input matInput placeholder="Phone" formControlName="phone" (blur)="onBlur($event, i)">
+                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('phone').hasError('required')">
+                            Phone is mandatory
+                        </mat-error>
+                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('phone').hasError('pattern')">
+                            Phone is invalid
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- Street -->
+                    <mat-form-field>
+                        <input matInput placeholder="Street" formControlName="street">
+                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('street').hasError('required')">
+                            Street is mandatory
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- Zip code -->
+                    <mat-form-field>
+                        <input matInput placeholder="Zip code" formControlName="zipcode">
+                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('zipcode').hasError('required')">
+                            Zip code is mandatory
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- City -->
+                    <mat-form-field>
+                        <input matInput placeholder="City" formControlName="city">
+                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('city').hasError('required')">
+                            City is mandatory
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- Country -->
+                    <mat-form-field>
+                        <input matInput placeholder="Country" formControlName="country">
+                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('country').hasError('required')">
+                            Country is mandatory
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Delete address action-->
+                    <div fxLayoutAlign="end" *ngIf="!id">
+                        <button mat-icon-button color="accent" (click)="deleteAddress(i)" [disabled]="i==0">
+                            <mat-icon matTooltip="Delete address">delete</mat-icon>
+                        </button>
+                    </div>
+                </mat-card>
+            </div>
+
+            <!-- Add new address action-->
+            <button *ngIf="!id" mat-icon-button color="primary" (click)="addAddress()">
+                <mat-icon matTooltip="Add address">addchart</mat-icon>
+            </button>
+
+            <button *ngIf="!id" mat-raised-button [disabled]="srForm.invalid" color="primary" (click)="onSubmit()"
+                style="margin-top: 10px;">Subimit</button>
+        </form>
+    </mat-card>
+</div>

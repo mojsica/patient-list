@@ -1,0 +1,21 @@
+.table-holder{
+    margin: 20px;
+}
+.mb-0 {
+    margin-bottom: 0px;
+}
+.mt-0 {
+    margin-top: 0px;
+}
+table {
+    width: 100%;
+}
+
+tr.mat-row:hover {
+    background-color: lightgrey;
+    cursor: pointer;
+}
+.mailto{
+    cursor: context-menu;
+}
+
