@@ -1,6 +1,6 @@
-export interface Doctor{
-    id: number,
-    firstName: string,
-    lastName: string,
-    title: string
+export interface Doctor {
+    id: number;
+    firstName: string;
+    lastName: string;
+    title: string;
 }

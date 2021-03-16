@@ -12,45 +12,41 @@ export class DoctorsService {
     this.setInitialDoctors();
   }
 
-  getDoctors() {
+  getDoctors(): Doctor[] {
     return this.doctors;
   }
 
-  getDoctorById(id: number): Doctor {
-    return this.doctors.find((doctor: Doctor) => doctor.id === id);
-  }
-
   getDoctorsNameById(id: number): string {
-    return this.getDoctorById(id).firstName + ' ' + this.getDoctorById(id).lastName + ' - ' + this.getDoctorById(id).title;
+    const doctor = this.doctors.find(dr => dr.id === id);
+    return doctor.firstName + ' ' + doctor.lastName + ' - ' + doctor.title;
   }
 
-  setInitialDoctors() {
+  setInitialDoctors(): void {
     this.doctors = [
       {
         id: 1,
-        firstName: "Gregory",
-        lastName: "House",
-        title: "MD"
+        firstName: 'Gregory',
+        lastName: 'House',
+        title: 'MD'
       },
       {
         id: 2,
-        firstName: "Elizabeth",
-        lastName: "Blackwell",
-        title: "MD"
+        firstName: 'Elizabeth',
+        lastName: 'Blackwell',
+        title: 'MD'
       },
       {
         id: 3,
-        firstName: "Joseph",
-        lastName: "Lister",
-        title: "Surgeon"
+        firstName: 'Joseph',
+        lastName: 'Lister',
+        title: 'Surgeon'
       },
       {
         id: 4,
-        firstName: "Eduard",
-        lastName: "Jenner",
-        title: "Immunologist"
+        firstName: 'Eduard',
+        lastName: 'Jenner',
+        title: 'Immunologist'
       }
-    ]
+    ];
   }
-
 }

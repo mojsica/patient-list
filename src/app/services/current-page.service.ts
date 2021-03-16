@@ -4,15 +4,14 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class CurrentPageService {
-
-  currentPageTitle: string = "";
+  currentPageTitle = '';
   constructor() { }
 
-  getCurrentPageTitle() {
+  getCurrentPageTitle(): string {
     return this.currentPageTitle;
   }
 
-  setCurrentPageTitle(title: string) {
+  setCurrentPageTitle(title: string): void {
     this.currentPageTitle = title;
   }
 

@@ -32,7 +32,7 @@ import { DoctorsService } from './services/doctors.service';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     MaterialModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   providers: [
     CurrentPageService,

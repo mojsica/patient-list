@@ -1,17 +1,24 @@
-<div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 60px;">
-    <mat-card *ngIf="!!id" style="width:360px;" fxLayoutAlign="start" fxLayout="column">
-        <h3>Patient id: {{id}}</h3>
-        <h3>Registered date: {{srForm.get('registeredDate').value | date}}</h3>
-    </mat-card>
+<div fxLayout="column" fxLayoutAlign="center center" style="margin-top: 60px; padding-bottom: 60px;">
     <div style="width:392px;">
         <div fxLayoutAlign="end">
             <button mat-icon-button color="primary" routerLink="/patient-list">
                 <mat-icon matTooltip="Go to the patient list">list</mat-icon>
             </button>
+            <button mat-icon-button color="accent" *ngIf="!!id" (click)="onDeletePatient()">
+                <mat-icon matTooltip="Delete patient record">delete</mat-icon>
+            </button>
         </div>
     </div>
     <mat-card style="width:360px;">
         <form fxLayout="column" [formGroup]="srForm">
+            <!-- id -->
+            <mat-form-field *ngIf="!!id">
+                <input matInput placeholder="Patient ID" formControlName="id">
+            </mat-form-field>
+            <!-- Registered date -->
+            <mat-form-field *ngIf="!!id">
+                <input matInput placeholder="Registered date" formControlName="registeredDate">
+            </mat-form-field>
             <!-- First name -->
             <mat-form-field>
                 <input matInput placeholder="First name" formControlName="firstName">
@@ -57,7 +64,7 @@
 
             <!-- Addresses -->
             <div formArrayName="addresses">
-                <mat-card *ngFor="let address of addressForms.controls; let i=index" [formGroupName]="i"
+                <mat-card @showState *ngFor="let address of addressForms.controls; let i=index" [formGroupName]="i"
                     fxLayout="column" style="margin-top: 5px;">
                     <!-- TYPE -->
                     <!-- HOME -->
@@ -66,9 +73,6 @@
                         <mat-select formControlName="type" disabled=true>
                             <mat-option value="HOME">Home</mat-option>
                         </mat-select>
-                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('type').hasError('required')">You must
-                            make a selection
-                        </mat-error>
                     </mat-form-field>
                     <!-- Rest types -->
                     <mat-form-field *ngIf="i>0">
@@ -81,6 +85,13 @@
                         </mat-select>
                         <mat-error *ngIf="srForm.get('addresses').controls[i].get('type').hasError('required')">You must
                             make a selection
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- Name -->
+                    <mat-form-field *ngIf="nameFieldPermited(i)" @showState>
+                        <input matInput placeholder="Text" formControlName="name">
+                        <mat-error *ngIf="srForm.get('addresses').controls[i].get('name').hasError('required')">
+                            Text is mandatory
                         </mat-error>
                     </mat-form-field>
                     <!-- Email -->
